@@ -1,0 +1,21 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>SPC</title>
+</head>
+<body>
+  
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io('http://localhost:4000', {query: 'auth_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZmlyc3ROYW1lIjoiVGFtIiwibGFzdE5hbWUiOiJEYW8iLCJlbWFpbCI6ImRhb3RhbTQ1MzZAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmEkMDgkWTVmM0JtQ1RkRUV3UXpKWHF6TW5XZVN6amRHLkozcVN4Z2xUaEdoNUE0cDFjSmpDdXdiNGkiLCJ1cGRhdGVkQXQiOiIyMDE3LTAzLTE4VDE0OjIwOjQyLjYxN1oiLCJjcmVhdGVkQXQiOiIyMDE3LTAzLTE4VDE0OjIwOjQyLjYxN1oiLCJiaW8iOm51bGx9.1CilpqbSL7qzjcUqQ1jYUewf6Jo84E5xp1VAvlR-2Go'});
+    socket.on('error', function(err) {
+      throw new Error(err);
+    });
+    socket.on('success', function(data) {
+      console.log(data.message);
+      console.log('user info: ' + data.user);
+      console.log('logged in: ' + data.user.logged_in)
+    });
+  </script>
+</body>
+</html>
