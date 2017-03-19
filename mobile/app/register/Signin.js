@@ -58,7 +58,7 @@ class Signin extends Component {
                 <TextInput
                     onChangeText={(text)=> this.setState({password: text})}
                     style={styles.siginInput}
-                    placeholder="Password" secureTextEntry="true"></TextInput>
+                    placeholder="Password" secureTextEntry={true}></TextInput>
                 <TouchableHighlight
                     onPress={this.onSigninPressed.bind(this)}
                     style={styles.button}>

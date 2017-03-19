@@ -28,6 +28,8 @@ router.post('/signup', function(req, res) {
         email: req.body.email,
         password: req.body.password
       }).then(function(user) {
+        return _setDefaultChannelsOfUser(user);
+      }).then(function(user) {
         var token = jwt.encode(user.get({ plain: true }), SECRET_KEY);
         res.json({
           token: token,
@@ -51,7 +53,7 @@ router.post('/signin', function(req, res) {
     if (!user) {
       res.status(403).json({ message: 'Authentication failed. User not found.' });
     } else {
-      if (user.comparePassword(req.body.password)) {
+      if (req.body.password && user.comparePassword(req.body.password)) {
         var token = jwt.encode(user.get({ plain: true }), SECRET_KEY);
         res.json({
           token: token,
@@ -65,3 +67,14 @@ router.post('/signin', function(req, res) {
     }
   });
 });
+
+function _setDefaultChannelsOfUser(user) {
+  return orm.Channel.findOne({
+    where: {
+      name: 'general'
+    }
+  }).then(function(channel) {
+    channel.addUser(user);
+    return user;
+  });
+}

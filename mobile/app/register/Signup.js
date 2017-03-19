@@ -64,11 +64,11 @@ class Signup extends Component {
                 <TextInput
                     onChangeText={(text)=> this.setState({password: text})}
                     style={styles.siginInput}
-                    placeholder="Password" secureTextEntry="true"></TextInput>
+                    placeholder="Password" secureTextEntry={true}></TextInput>
                 <TextInput
                     onChangeText={(text)=> this.setState({confirmPassword: text})}
                     style={styles.siginInput}
-                    placeholder="Confirm Password" secureTextEntry="true"></TextInput>
+                    placeholder="Confirm Password" secureTextEntry={true}></TextInput>
                 <TouchableHighlight
                     onPress={this.onSignupPressed.bind(this)}
                     style={styles.button}>

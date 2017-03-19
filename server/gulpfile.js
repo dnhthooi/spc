@@ -8,6 +8,11 @@ gulp.task('dbup', shell.task([
   'node_modules/.bin/sequelize db:migrate'
 ]));
 
+gulp.task('dbseed', shell.task([
+  'node_modules/.bin/sequelize db:seed:all'
+]));
+
+
 gulp.task('develop', function () {
   livereload.listen();
   nodemon({

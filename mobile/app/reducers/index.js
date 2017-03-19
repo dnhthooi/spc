@@ -5,7 +5,7 @@ import { types } from '../actions';
 const isLoggedIn = (state=false, action) => {
   switch(action.type) {
     case types.SET_LOGGED_IN:
-      return action.currentUser;
+      return true;
     case types.SET_UNLOGGED_IN:
       return false;
   }
@@ -52,12 +52,55 @@ const signUpStatus = (state = {}, action) => {
   return state;
 }
 
+const currentUser = (state={}, action) => {
+  switch(action.type) {
+    case types.SET_CURRENT_USER:
+      debugger;
+      return action.user;
+  }
+  return state;
+}
+
+const channels = (state = [], action) => {
+  switch(action.type) {
+    case types.SET_CHANNELS:
+      return action.channels;
+    case types.ADD_CHANNEL:
+      state.push(action.channel);
+      return state;
+  }
+  return state;
+}
+
+const selectedChannel = (state = {}, action) => {
+  switch(action.type) {
+    case types.SET_CURRENT_CHANNEL:
+      return { id: action.channelId, messages: channels[action.channelId] };
+  }
+  return state;
+}
+
+const messages = (state = [], action) => {
+  switch(action.type) {
+    case types.SET_MESSAGES:
+      return action.messages;
+    case types.ADD_MESSAGE:
+      state.push(action.message);
+      return state;
+  }
+  return state;
+}
+
 const rootReducer = combineReducers({
   isLoggedIn,
   checkingAuth,
   canDisplaySignin,
   signInStatus,
-  signUpStatus
+  signUpStatus,
+  currentUser,
+  channels,
+  selectedChannel,
+  messages
 });
 
 export default rootReducer;

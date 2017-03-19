@@ -15,6 +15,7 @@ module.exports = function(sequelize, DataTypes) {
 
         Channel.belongsTo(models.User, { as: 'owner' });
         Channel.belongsToMany(models.User, { as: 'Users', through: 'JoinChannels', foreignKey: 'channelId' });
+        Channel.hasMany(models.Message, { as: 'Messages', foreignKey: 'channelId' });
       }
     }
   });

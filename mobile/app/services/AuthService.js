@@ -3,7 +3,7 @@ var _ = require('lodash');
 
 const authKey = 'auth';
 const userKey = 'user';
-const apiURL = 'http://localhost:4000/api'
+const apiURL = 'http://localhost:4000/api';
 
 class AuthService {
   getAuthInfo(){
@@ -31,6 +31,7 @@ class AuthService {
 
         return resolve(authInfo);
       });
+      
     });
   }
 

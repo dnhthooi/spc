@@ -16,7 +16,10 @@ import {
   TouchableHighlight
 } from 'react-native';
 
+import { ApiService, SocketService } from './services';
+
 import Register from './register/Register';
+import Message from './message/Message';
 
 import * as AppActions from './actions';
 
@@ -26,15 +29,46 @@ class App extends Component {
     super();
     this.state = {
       isLoggedIn: props.isLoggedIn,
-      checkingAuth: props.checkingAuth
+      checkingAuth: props.checkingAuth,
+      currentUser: props.currentUser
     };
   }
 
   componentWillReceiveProps(props) {
     this.setState({
       isLoggedIn: props.isLoggedIn,
-      checkingAuth: props.checkingAuth
+      checkingAuth: props.checkingAuth,
+      currentUser: props.currentUser
     });
+
+    if(props.isLoggedIn && props.currentUser) {
+      let token = props.currentUser.token;
+      ApiService.setToken(token);
+      this.props.getAllChannelsOfUser();
+
+      let socket = SocketService.getSocket(token);
+
+      socket.on('error', function(err) {
+        console.log(err);
+      });
+      
+      socket.on('success', function(data) {
+        console.log(data.message);
+        console.log('user info: ' + data.user);
+        socket.emit('userJoined', null);
+      });
+      
+      socket.on('messages', function(messages) {
+        console.log(messages);
+      });
+
+      socket.on('message', function(message) {
+        console.log(message);
+      });
+
+    } else {
+      SocketService.disconnect();
+    }
   }
 
   componentDidMount() {
@@ -51,7 +85,7 @@ class App extends Component {
     if(this.state.isLoggedIn) {
       return (
         <View style={styles.container}>
-          <Text style={styles.welcome}>Logged in!</Text>
+          <Message></Message>
         </View>
       );
     }
@@ -84,11 +118,13 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   isLoggedIn: state.isLoggedIn,
-  checkingAuth: state.checkingAuth
+  checkingAuth: state.checkingAuth,
+  currentUser: state.currentUser
 })
 
 const mapDispatchToProps = {
-    requestAuth: AppActions.checkingAuth
+    requestAuth: AppActions.checkingAuth,
+    getAllChannelsOfUser: AppActions.getAllChannelsOfUser
 }
 
 export default connect(

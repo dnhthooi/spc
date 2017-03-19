@@ -4,7 +4,8 @@ module.exports = {
     "password": "123456",
     "database": "spc-development",
     "host": "localhost",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "seederStorage": "json"
   },
   "test": {
     "username": "postgres",
