@@ -18,32 +18,18 @@ import {
 
 import thunk from "redux-thunk";
 
-import App from './App';
-import AuthService from './AuthService';
-import reducer from './reducers';
-import { debuggerDispacth } from './actions';
+import App from './app/App';
+import reducer from './app/reducers';
 
 const store = createStore(
   reducer,
   applyMiddleware(thunk)
 );
 
-function logger({ dispatch, getState }) {
-  return (next) => (action) => {
-    console.log(JSON.stringify(action));
-    if (typeof action === 'function') {
-      return action(dispatch, getState);
-    }
-
-    return next(action);
-  }
-}
-
 export default class mobile extends Component {
 
   constructor() {
     super();
-    store.dispatch(debuggerDispacth());
   }
 
   render() {
