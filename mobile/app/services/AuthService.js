@@ -1,4 +1,5 @@
 import { AsyncStorage } from 'react-native';
+import * as _ from 'lodash';
 
 const authKey = 'auth';
 const userKey = 'user';
