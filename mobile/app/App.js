@@ -35,14 +35,14 @@ class App extends Component {
   }
 
   componentWillReceiveProps(props) {
-    
+
     this.setState({
       isLoggedIn: props.isLoggedIn,
       checkingAuth: props.checkingAuth,
       currentUser: props.currentUser
     });
 
-    if(props.isLoggedIn && props.currentUser) {
+    if (props.isLoggedIn && props.currentUser) {
       let token = props.currentUser.token;
       ApiService.setToken(token);
       SocketService.setToken(token);
@@ -56,13 +56,13 @@ class App extends Component {
   }
 
   render() {
-    
-    if(this.state.checkingAuth) {
+
+    if (this.state.checkingAuth) {
       return (<View style={styles.container}>
         <Text style={styles.welcome}>Checking....</Text>
       </View>)
     }
-    if(this.state.isLoggedIn && this.state.currentUser) {
+    if (this.state.isLoggedIn && this.state.currentUser) {
       return (
         <View style={styles.container}>
           <Message></Message>
@@ -103,7 +103,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-    requestAuth: AppActions.checkingAuth
+  requestAuth: AppActions.checkingAuth
 }
 
 export default connect(

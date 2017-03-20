@@ -19,6 +19,7 @@ import { SocketService } from '../services';
 import * as AppActions from '../actions';
 
 class Message extends Component {
+  socketChannels = {};
   constructor(props) {
     super();
 
@@ -38,29 +39,27 @@ class Message extends Component {
       currentUser: props.currentUser,
       selectedChannel: props.selectedChannel
     });
-
-    if (props.selectedChannel === -1 && props.channels.length) {
-
-      this.props.setCurrentChannel(props.channels[0].id);
+    
+    if (props.selectedChannel === -1 && props.channels.length) {  
+      props.setCurrentChannel(props.channels[0]);
 
       let socket = SocketService.getSocket();
 
-      socket.on('error', function(err) {
+      socket.on('error', (err) => {
         console.log(err);
       });
 
-      socket.on('success', function(data) {
-        console.log(data.message);
-        console.log('user info: ' + data.user);
-        socket.emit('userJoined', null);
-      });
-
-      socket.on('messages', function(messages) {
-        console.log(messages);
-      });
-
-      socket.on('message', function(message) {
-        console.log(message);
+      socket.on('success', (data) => {
+        console.log(data);
+        data.channels.forEach((channel) => {
+          
+          this.socketChannels[channel] = SocketService.joinChannel(channel);
+          this.socketChannels[channel].on('message', (message) => {
+            if(channel === this.props.selectedChannel.name) {
+              this.onReceivedMessage([message]);
+            }
+          });
+        });
       });
     }
   }
@@ -70,48 +69,55 @@ class Message extends Component {
   }
 
   onSend(messages = []) {
+
+    this.socketChannels[this.props.selectedChannel.name].send(messages[0]);
     this._storeMessages(messages);
+
   }
 
   render() {
-    var user = { _id: this.state.userId || -1 };
+    var user = { _id: this.state.currentUser.id || -1 };
 
-    return ( <View style = { styles.container }>
-      <GiftedChat messages = { this.state.messages }
-      onSend = { this.onSend.bind(this) }
-      user = { user }
+    return (<View style={styles.container}>
+      <GiftedChat messages={this.state.messages}
+        onSend={this.onSend.bind(this)}
+        user={user}
       /></View>)
-    }
-
-    _storeMessages(messages) {
-      this.setState((previousState) => {
-        return {
-          messages: GiftedChat.append(previousState.messages, messages),
-        };
-      });
-    }
   }
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      width: '100%'
-    }
-  });
+  onReceivedMessage(messages) {
+    this._storeMessages(messages);
+  }
 
-  const mapStateToProps = state => ({
-    channels: state.channels,
-    messages: state.messages,
-    currentUser: state.currentUser,
-    selectedChannel: state.selectedChannel
-  });
+  _storeMessages(messages) {
+    this.setState((previousState) => {
+      return {
+        messages: GiftedChat.append(previousState.messages, messages),
+      };
+    });
+  }
+}
 
-  const mapDispatchToProps = {
-    setCurrentChannel: AppActions.setCurrentChannel,
-    getAllChannelsOfUser: AppActions.getAllChannelsOfUser
-  };
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '100%'
+  }
+});
 
-  export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Message);
+const mapStateToProps = state => ({
+  channels: state.channels,
+  messages: state.messages,
+  currentUser: state.currentUser,
+  selectedChannel: state.selectedChannel
+});
+
+const mapDispatchToProps = {
+  setCurrentChannel: AppActions.setCurrentChannel,
+  getAllChannelsOfUser: AppActions.getAllChannelsOfUser
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Message);

@@ -74,7 +74,7 @@ const channels = (state = [], action) => {
 const selectedChannel = (state = -1, action) => {
   switch(action.type) {
     case types.SET_CURRENT_CHANNEL:
-      return action.channelId;
+      return action.channel;
   }
   return state;
 }

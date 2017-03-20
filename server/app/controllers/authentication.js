@@ -32,6 +32,7 @@ router.post('/signup', function(req, res) {
       }).then(function(user) {
         var token = jwt.encode(user.get({ plain: true }), SECRET_KEY);
         res.json({
+          id: user.id,
           token: token,
           firstName: user.firstName,
           lastName: user.lastName,
@@ -56,6 +57,7 @@ router.post('/signin', function(req, res) {
       if (req.body.password && user.comparePassword(req.body.password)) {
         var token = jwt.encode(user.get({ plain: true }), SECRET_KEY);
         res.json({
+          id: user.id,
           token: token,
           firstName: user.firstName,
           lastName: user.lastName,

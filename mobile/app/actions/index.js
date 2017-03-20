@@ -49,9 +49,9 @@ export const getAllChannelsOfUser = () => (dispatch) => {
 
 }
 
-export const setCurrentChannel = (channelId) => (dispatch) => {
-  dispatch({ type: types.SET_CURRENT_CHANNEL, channelId });
-  getAllMessagesOfChannel(channelId)(dispatch);
+export const setCurrentChannel = (channel) => (dispatch) => {
+  dispatch({ type: types.SET_CURRENT_CHANNEL, channel });
+  getAllMessagesOfChannel(channel.id)(dispatch);
 }
 
 export const getAllMessagesOfChannel = (channelId) => (dispatch) => {

@@ -4,7 +4,7 @@
  * @flow
  */
 
-import { 
+import {
   createStore,
   applyMiddleware
 } from 'redux';
