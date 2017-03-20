@@ -1,5 +1,3 @@
-var _ = require('lodash');
-
 const apiURL = 'http://localhost:4000/api';
 
 class ApiService {

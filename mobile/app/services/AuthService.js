@@ -1,37 +1,36 @@
-var AsyncStorage = require('react-native').AsyncStorage;
-var _ = require('lodash');
+import { AsyncStorage } from 'react-native';
 
 const authKey = 'auth';
 const userKey = 'user';
 const apiURL = 'http://localhost:4000/api';
 
 class AuthService {
-  getAuthInfo(){
+  getAuthInfo() {
     return new Promise((resolve, reject) => {
-      
-      AsyncStorage.multiGet([authKey, userKey], (err, val)=> {
-        if(err){
-            return reject(err);
+
+      AsyncStorage.multiGet([authKey, userKey], (err, val) => {
+        if (err) {
+          return reject(err);
         }
 
-        if(!val){
-            return reject();
+        if (!val) {
+          return reject();
         }
 
-        var zippedObj = _.zipObject(val);
+        let zippedObj = _.zipObject(val);
 
-        if(!zippedObj[authKey]){
-            return reject();
+        if (!zippedObj[authKey]) {
+          return reject();
         }
 
-        var authInfo = {
+        let authInfo = {
           token: zippedObj[authKey],
           user: JSON.parse(zippedObj[userKey])
         }
 
         return resolve(authInfo);
       });
-      
+
     });
   }
 
@@ -63,7 +62,7 @@ class AuthService {
             return resolve(results);
           });
         }).catch((err) => {
-          return reject({unknownError: true, rawError: err});
+          return reject({ unknownError: true, rawError: err });
         });
     });
   }
@@ -71,33 +70,33 @@ class AuthService {
   signup(creds) {
     return new Promise((resolve, reject) => {
       this._post(apiURL + '/signup', creds)
-      .then((response) => {
-        if (response.status >= 200 && response.status < 300) {
-          return response;
-        }
-
-        throw {
-          badCredentials: response.status == 401,
-          unknownError: response.status != 401
-        }
-
-      }).then((response) => {
-        return response.json();
-      }).then((results) => {
-
-        AsyncStorage.multiSet([
-          [authKey, results.token],
-          [userKey, JSON.stringify(results)]
-        ], (err) => {
-          if (err) {
-            throw err;
+        .then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response;
           }
 
-          return resolve(results);
-        })
-      }).catch((err) => {
-        return reject(err);
-      });
+          throw {
+            badCredentials: response.status == 401,
+            unknownError: response.status != 401
+          }
+
+        }).then((response) => {
+          return response.json();
+        }).then((results) => {
+
+          AsyncStorage.multiSet([
+            [authKey, results.token],
+            [userKey, JSON.stringify(results)]
+          ], (err) => {
+            if (err) {
+              throw err;
+            }
+
+            return resolve(results);
+          })
+        }).catch((err) => {
+          return reject(err);
+        });
     });
   }
 

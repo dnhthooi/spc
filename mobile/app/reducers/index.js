@@ -2,8 +2,8 @@
 import { combineReducers } from 'redux';
 import { types } from '../actions';
 
-const isLoggedIn = (state=false, action) => {
-  switch(action.type) {
+const isLoggedIn = (state = false, action) => {
+  switch (action.type) {
     case types.SET_LOGGED_IN:
       return true;
     case types.SET_UNLOGGED_IN:
@@ -12,8 +12,8 @@ const isLoggedIn = (state=false, action) => {
   return state;
 }
 
-const checkingAuth = (state=true, action) => {
-  switch(action.type) {
+const checkingAuth = (state = true, action) => {
+  switch (action.type) {
     case types.SET_AUTHENTICATE_REQUESTED:
       return true;
     case types.SET_AUTHENTICATE_DONE:
@@ -22,8 +22,8 @@ const checkingAuth = (state=true, action) => {
   return state;
 }
 
-const canDisplaySignin = (state=true, action) => {
-  switch(action.type) {
+const canDisplaySignin = (state = true, action) => {
+  switch (action.type) {
     case types.SHOW_SIGNIN:
       return state = true;
     case types.HIDE_SIGNIN:
@@ -33,7 +33,7 @@ const canDisplaySignin = (state=true, action) => {
 }
 
 const signInStatus = (state = {}, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case types.SIGNIN_SUCCESS:
       return {};
     case types.SIGNIN_FAILED:
@@ -43,7 +43,7 @@ const signInStatus = (state = {}, action) => {
 }
 
 const signUpStatus = (state = {}, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case types.SIGNIN_SUCCESS:
       return {};
     case types.SIGNIN_FAILED:
@@ -53,7 +53,7 @@ const signUpStatus = (state = {}, action) => {
 }
 
 const currentUser = (state = 0, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case types.SET_CURRENT_USER:
       return action.user;
   }
@@ -61,7 +61,7 @@ const currentUser = (state = 0, action) => {
 }
 
 const channels = (state = [], action) => {
-  switch(action.type) {
+  switch (action.type) {
     case types.SET_CHANNELS:
       return action.channels;
     case types.ADD_CHANNEL:
@@ -72,7 +72,7 @@ const channels = (state = [], action) => {
 }
 
 const selectedChannel = (state = -1, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case types.SET_CURRENT_CHANNEL:
       return action.channel;
   }
@@ -80,7 +80,7 @@ const selectedChannel = (state = -1, action) => {
 }
 
 const messages = (state = [], action) => {
-  switch(action.type) {
+  switch (action.type) {
     case types.SET_MESSAGES:
       return action.messages;
     case types.ADD_MESSAGE:

@@ -39,8 +39,8 @@ class Message extends Component {
       currentUser: props.currentUser,
       selectedChannel: props.selectedChannel
     });
-    
-    if (props.selectedChannel === -1 && props.channels.length) {  
+
+    if (props.selectedChannel === -1 && props.channels.length) {
       props.setCurrentChannel(props.channels[0]);
 
       let socket = SocketService.getSocket();
@@ -52,10 +52,10 @@ class Message extends Component {
       socket.on('success', (data) => {
         console.log(data);
         data.channels.forEach((channel) => {
-          
+
           this.socketChannels[channel] = SocketService.joinChannel(channel);
           this.socketChannels[channel].on('message', (message) => {
-            if(channel === this.props.selectedChannel.name) {
+            if (channel === this.props.selectedChannel.name) {
               this.onReceivedMessage([message]);
             }
           });
@@ -76,7 +76,7 @@ class Message extends Component {
   }
 
   render() {
-    var user = { _id: this.state.currentUser.id || -1 };
+    let user = { _id: this.state.currentUser.id || -1, name: `${this.state.currentUser.firstName} ${this.state.currentUser.firstName}` };
 
     return (<View style={styles.container}>
       <GiftedChat messages={this.state.messages}

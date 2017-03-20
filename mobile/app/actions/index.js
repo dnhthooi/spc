@@ -35,14 +35,14 @@ export const checkingAuth = () => (dispatch) => {
       dispatch({ type: types.SET_UNLOGGED_IN });
       dispatch({ type: types.SET_AUTHENTICATE_DONE });
     });
-    
+
 }
 
 export const getAllChannelsOfUser = () => (dispatch) => {
 
   ApiService.getChannels()
     .then((channels) => {
-      dispatch({type: types.SET_CHANNELS, channels});
+      dispatch({ type: types.SET_CHANNELS, channels });
     }).catch((err) => {
       console.log(err);
     });
@@ -57,7 +57,7 @@ export const setCurrentChannel = (channel) => (dispatch) => {
 export const getAllMessagesOfChannel = (channelId) => (dispatch) => {
   ApiService.getMessagesOfChannel(channelId)
     .then((messages) => {
-      dispatch({type: types.SET_MESSAGES, messages});
+      dispatch({ type: types.SET_MESSAGES, messages });
     }).catch((err) => {
       console.log(err);
     });
@@ -65,7 +65,7 @@ export const getAllMessagesOfChannel = (channelId) => (dispatch) => {
 
 export const signIn = (email, password) => (dispatch) => {
 
-  AuthService.signin({email, password})
+  AuthService.signin({ email, password })
     .then((authInfo) => {
       loggedIn(dispatch, authInfo);
       dispatch({ type: types.SIGNIN_SUCCESS });
@@ -75,12 +75,12 @@ export const signIn = (email, password) => (dispatch) => {
       dispatch({ type: types.SIGNIN_FAILED, err });
       dispatch({ type: types.SET_AUTHENTICATE_DONE });
     });
-    
+
 }
 
 export const signUp = (firstName, lastName, email, password) => (dispatch) => {
 
-  AuthService.signup({firstName, lastName, email, password})
+  AuthService.signup({ firstName, lastName, email, password })
     .then((authInfo) => {
       loggedIn(dispatch, authInfo);
       dispatch({ type: types.SIGNUP_SUCCESS });
@@ -90,7 +90,7 @@ export const signUp = (firstName, lastName, email, password) => (dispatch) => {
       dispatch({ type: types.SIGNUP_FAILED, err });
       dispatch({ type: types.SET_AUTHENTICATE_DONE });
     });
-    
+
 }
 
 export const showSignin = () => ({ type: types.SHOW_SIGNIN })
