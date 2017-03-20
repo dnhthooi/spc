@@ -35,6 +35,7 @@ class App extends Component {
   }
 
   componentWillReceiveProps(props) {
+    
     this.setState({
       isLoggedIn: props.isLoggedIn,
       checkingAuth: props.checkingAuth,
@@ -44,28 +45,7 @@ class App extends Component {
     if(props.isLoggedIn && props.currentUser) {
       let token = props.currentUser.token;
       ApiService.setToken(token);
-      this.props.getAllChannelsOfUser();
-
-      let socket = SocketService.getSocket(token);
-
-      socket.on('error', function(err) {
-        console.log(err);
-      });
-      
-      socket.on('success', function(data) {
-        console.log(data.message);
-        console.log('user info: ' + data.user);
-        socket.emit('userJoined', null);
-      });
-      
-      socket.on('messages', function(messages) {
-        console.log(messages);
-      });
-
-      socket.on('message', function(message) {
-        console.log(message);
-      });
-
+      SocketService.setToken(token);
     } else {
       SocketService.disconnect();
     }
@@ -82,7 +62,7 @@ class App extends Component {
         <Text style={styles.welcome}>Checking....</Text>
       </View>)
     }
-    if(this.state.isLoggedIn) {
+    if(this.state.isLoggedIn && this.state.currentUser) {
       return (
         <View style={styles.container}>
           <Message></Message>
@@ -123,8 +103,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-    requestAuth: AppActions.checkingAuth,
-    getAllChannelsOfUser: AppActions.getAllChannelsOfUser
+    requestAuth: AppActions.checkingAuth
 }
 
 export default connect(

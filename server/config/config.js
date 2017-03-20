@@ -20,7 +20,7 @@ var config = {
   test: {
     root: rootPath,
     app: {
-      name: 'labelle'
+      name: 'spc'
     },
     port: process.env.PORT || 3200,
     socketPort: process.env.PORT || 3200,

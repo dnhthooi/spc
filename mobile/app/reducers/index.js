@@ -52,10 +52,9 @@ const signUpStatus = (state = {}, action) => {
   return state;
 }
 
-const currentUser = (state={}, action) => {
+const currentUser = (state = 0, action) => {
   switch(action.type) {
     case types.SET_CURRENT_USER:
-      debugger;
       return action.user;
   }
   return state;
@@ -72,10 +71,10 @@ const channels = (state = [], action) => {
   return state;
 }
 
-const selectedChannel = (state = {}, action) => {
+const selectedChannel = (state = -1, action) => {
   switch(action.type) {
     case types.SET_CURRENT_CHANNEL:
-      return { id: action.channelId, messages: channels[action.channelId] };
+      return action.channelId;
   }
   return state;
 }

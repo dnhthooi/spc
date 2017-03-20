@@ -32,11 +32,11 @@ router.get('/channel/:id/message', passport.authenticate('jwt', { session: false
       return user.getChannels({
         where: {
           id: +req.params.id
-        }
+        },
+        plain: true
       });
     })
-    .then(function(channels) {
-      var channel = channels[0];
+    .then(function(channel) {
       return channel.getMessages();
     })
     .then(function(messages) {

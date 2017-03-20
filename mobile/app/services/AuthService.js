@@ -51,6 +51,7 @@ class AuthService {
         }).then((response) => {
           return response.json();
         }).then((results) => {
+
           AsyncStorage.multiSet([
             [authKey, results.token],
             [userKey, JSON.stringify(results)]

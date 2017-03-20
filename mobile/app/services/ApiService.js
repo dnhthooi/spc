@@ -9,11 +9,11 @@ class ApiService {
   }
 
   getChannels() {
-    return this._get(apiURL + '/channel');
+    return this._get(`${apiURL}/channel`);
   }
 
   getMessagesOfChannel(channelId) {
-    return this._get(apiURL + '/channel/id/message');
+    return this._get(`${apiURL}/channel/${channelId}/message`);
   }
 
   _post(url, creds) {
@@ -25,12 +25,12 @@ class ApiService {
         'Authorization': 'JWT ' + this._token
       },
       body: JSON.stringify(creds)
+    }).then((response) => {
+      return response.json();
     });
   }
 
   _get(url) {
-    console.log(url);
-    debugger;
     return fetch(url, {
       method: 'GET',
       headers: {
@@ -38,6 +38,8 @@ class ApiService {
         'Content-Type': 'application/json',
         'Authorization': 'JWT ' + this._token
       }
+    }).then((response) => {
+      return response.json();
     });
   }
 }
